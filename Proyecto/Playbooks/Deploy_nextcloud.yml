@@ -1,0 +1,134 @@
+---
+- name: Instalación y configuración de Nextcloud
+  hosts: Nextcloud
+  become: yes
+
+  vars_files:
+    - ../vars/variables.yml
+  
+  tasks:
+
+   - name: Actualizar repositorios
+     apt:
+        update_cache: yes
+
+   - name: Instalar apache2
+     apt: 
+      name: apache2
+      state: present
+
+   - name: Instalar mariadb
+     apt: 
+      name: mariadb-server
+      state: present
+
+   - name: Instalamos el gestor de paquetes de Python pip3
+     apt: 
+      name: python3-pip
+      state: present
+    
+   - name: Instalar PyMySQL
+     pip:
+      name: pymysql
+      state: present
+
+   - name: Instalar paquetes PHP y módulos de Apache
+     apt:
+      name:
+        - libapache2-mod-php
+        - php-bz2
+        - php-gd
+        - php-mysql
+        - php-curl
+        - php-mbstring
+        - php-imagick
+        - php-zip
+        - php-ctype
+        - php-curl
+        - php-dom
+        - php-json
+        - php-posix
+        - php-bcmath
+        - php-xml
+        - php-intl
+        - php-gmp
+        - php-ldap
+        - zip
+        - unzip
+        - wget
+      state: present
+    
+   - name: Habilitar módulos en Apache2
+     command: a2enmod rewrite dir mime env headers
+
+   - name: Reiniciar el servidor web Apache
+     service:
+       name: apache2
+       state: restarted
+  
+   - name: Eliminar la base de datos previa
+     mysql_db:
+      name: '{{ Nextcloud.Nextcloud_DB_NAME }}'
+      state: absent
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+   
+   - name: Crear base de datos para Nextcloud
+     mysql_db:
+      name: '{{ Nextcloud.Nextcloud_DB_NAME }}'
+      state: present
+      login_unix_socket: /var/run/mysqld/mysqld.sock
+
+   - name: Crear usuario y conceder privilegios para Nextcloud en la base de datos
+     mysql_user:
+       name: '{{ Nextcloud.Nextcloud_DB_USER }}'
+       password: '{{ Nextcloud.Nextcloud_DB_PASS }}'
+       host: localhost
+       priv: '{{ Nextcloud.Nextcloud_DB_NAME }}.*:ALL'
+       state: present
+       login_unix_socket: /var/run/mysqld/mysqld.sock
+
+   - name: Eliminamos instalaciones previas de Nextlcoud
+     shell: rm -rf /var/www/*
+
+   - name: Descargar y descomprimir Nextcloud
+     get_url:
+       url: ' https://download.nextcloud.com/server/releases/latest.zip'
+       dest: '/var/www/'
+  
+   - name: Descomprimir Nextcloud
+     unarchive:
+       src: '/var/www/latest.zip'
+       dest: '/var/www/'
+       remote_src: yes
+
+   - name: Cambiar propietario y permisos de Nextcloud
+     file:
+       path: '/var/www/'
+       owner: www-data
+       group: www-data
+       recurse: yes
+       mode: '775'
+
+   - name: Permisos y propietario de carpeta de datos
+     file:
+       path: '/var/www/nextcloud/data'
+       owner: www-data
+       group: www-data
+       recurse: yes
+       mode: '775'
+
+   - name: Configurar Apache para Nextcloud
+     template:
+       src: /home/ubuntu/Proyecto/template/000-default.conf
+       dest: /etc/apache2/sites-available/000-default.conf
+  
+   - name: Ejecutar script de instalación de Nextcloud
+     command: php /var/www/nextcloud/occ maintenance:install \
+       --database="{{ Nextcloud.Nextcloud_DB_ }}" \
+       --database-name="{{ Nextcloud.Nextcloud_DB_NAME }}" \
+       --database-user="{{ Nextcloud.Nextcloud_DB_USER }}" \
+       --database-pass="{{ Nextcloud.Nextcloud_DB_PASS }}" \
+       --admin-user="{{ Nextcloud.Nextcloud_ADMIN_USER }}" \
+       --admin-pass="{{ Nextcloud.Nextcloud_ADMIN_PASS }}" 
+   
+   

@@ -1,0 +1,17 @@
+[Moodle_frontend]
+44.205.202.189
+
+[Moodle_backend]
+3.210.241.126
+
+[Nextcloud]
+3.211.98.217
+
+[LDAP]
+44.195.64.191
+
+[all:vars]
+ansible_user=ubuntu
+ansible_ssh_private_key_file=/home/ubuntu/Proyecto/labsusernew.pem
+ansible_ssh_common_args='-o StrictHostKeyChecking=accept-new'
+ansible_python_interpreter=/usr/bin/python3

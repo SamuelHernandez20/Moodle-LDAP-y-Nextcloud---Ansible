@@ -1,0 +1,183 @@
+---
+- name: Instalación y configuración de LDAP
+  hosts: LDAP
+  become: yes
+
+  vars_files:
+    - ../vars/variables.yml
+  tasks:
+
+  - name: Incluir ruta del módulo ldap
+    set_fact:
+      ansible_python_interpreter: /usr/bin/python3
+
+  - name: Instalar servidor LDAP y herramientas de administración
+    apt:
+      name: "{{ item }}"
+      state: present
+    loop:
+      - slapd
+      - ldap-utils
+  
+  - name: Instalar módulo PHP-LDAP
+    apt:
+       name: php-ldap
+       state: present
+
+  - name: Reiniciar servicio LDAP
+    service:
+      name: slapd
+      state: restarted
+  
+  - name: Configurar unidad organizativa para los alumnos
+    ldap_entry:
+      dn: "ou=alumnos,dc=ATLAS,dc=com"
+      state: present
+      objectClass:
+        - organizationalUnit
+        - top
+      attributes:
+        ou: "alumnos"
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+  
+  - name: Configurar unidad organizativa para los profesores
+    ldap_entry:
+      dn: "ou=profesores,dc=ATLAS,dc=com"
+      state: present
+      objectClass:
+        - organizationalUnit
+        - top
+      attributes:
+        ou: "profesores"
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+
+  - name: Eliminar grupo alumnos previos LDAP existentes
+    ldap_entry:
+      dn: "cn={{ item.uid }},ou=alumnos,dc=ATLAS,dc=com"
+      state: absent
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+    loop: "{{ grupos_alumnos }}"
+  
+  - name: Eliminar grupo profesores previos LDAP existentes
+    ldap_entry:
+      dn: "cn={{ item.uid }},ou=profesores,dc=ATLAS,dc=com"
+      state: absent
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+    loop: "{{ grupos_profesores }}"
+  
+  - name: Eliminar usuarios  alumnos previos LDAP existentes
+    ldap_entry:
+      dn: "uid={{ item.uid }},ou=alumnos,dc=ATLAS,dc=com"
+      state: absent
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+    loop: "{{ users }}"
+  
+  - name: Eliminar usuarios profesores previos LDAP existentes
+    ldap_entry:
+      dn: "uid={{ item.uid }},ou=profesores,dc=ATLAS,dc=com"
+      state: absent
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+    loop: "{{ users_profes }}"
+    
+  - name: Crear usuarios alumnos
+    ldap_entry:
+       dn: "uid={{ item.uid }},ou=alumnos,dc=ATLAS,dc=com"
+       state: present
+       objectClass:
+         - posixAccount
+         - inetOrgPerson
+         - organizationalPerson
+         - person
+       attributes:
+         cn: "{{ item.cn }}"
+         sn: "{{ item.sn }}"
+         uid: "{{ item.uid }}"
+         uidNumber: "{{ item.uidNumber }}"
+         gidNumber: "{{ item.gidNumber }}"
+         userPassword: "{{ item.password }}"
+         homeDirectory: "/home/{{ item.uid }}"
+         loginShell: "/bin/bash"
+       bind_dn: "{{ LDAP.admin_dn }}"
+       bind_pw: "{{ LDAP.admin_password }}"
+    loop: "{{ users }}"
+  
+  - name: Crear usuarios profesores
+    ldap_entry:
+       dn: "uid={{ item.uid }},ou=profesores,dc=ATLAS,dc=com"
+       state: present
+       objectClass:
+         - posixAccount
+         - inetOrgPerson
+         - organizationalPerson
+         - person
+       attributes:
+         cn: "{{ item.cn }}"
+         sn: "{{ item.sn }}"
+         uid: "{{ item.uid }}"
+         uidNumber: "{{ item.uidNumber }}"
+         gidNumber: "{{ item.gidNumber }}"
+         userPassword: "{{ item.password }}"
+         homeDirectory: "/home/{{ item.uid }}"
+         loginShell: "/bin/bash"
+       bind_dn: "{{ LDAP.admin_dn }}"
+       bind_pw: "{{ LDAP.admin_password }}"
+    loop: "{{ users_profes }}"
+
+  - name: Creacion del grupo para los alumnos
+    ldap_entry:
+      dn: "cn=alumnos,ou=alumnos,dc=ATLAS,dc=com"
+      state: present
+      objectClass:
+        - posixGroup
+      attributes:
+        cn: "alumnos"
+        gidNumber: "10000"
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+
+  - name: Creacion del grupo para los profesores
+    ldap_entry:
+      dn: "cn=profesores,ou=profesores,dc=ATLAS,dc=com"
+      state: present
+      objectClass:
+        - posixGroup
+      attributes:
+        cn: "profesores"
+        gidNumber: "10001"
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+  
+  - name: Agregar a los alumnos al grupo de los alumnos
+    ldap_attrs:
+      dn: "cn={{ item.group_name }},ou=alumnos,dc=ATLAS,dc=com"
+      state: present
+      attributes:
+        memberUid: "{{ item.uid }}"
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+    with_items: "{{ grupos_alumnos }}"
+
+  - name: Agregar a los profesores al grupo de los profesores
+    ldap_attrs:
+      dn: "cn={{ item.group_name }},ou=profesores,dc=ATLAS,dc=com"
+      state: present
+      attributes:
+        memberUid: "{{ item.uid }}"
+      bind_dn: "{{ LDAP.admin_dn }}"
+      bind_pw: "{{ LDAP.admin_password }}"
+    with_items: "{{ grupos_profesores }}"
+
+
+     
+
+
+
+
+
+

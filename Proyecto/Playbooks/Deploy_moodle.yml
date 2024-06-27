@@ -1,0 +1,113 @@
+---
+- name: Instalar y configurar Moodle
+  hosts: Moodle_frontend
+  become: true
+
+  vars_files:
+    - ../vars/variables.yml
+     
+  tasks:
+    - name: Actualizar los repositorios
+      apt:
+        update_cache: yes
+
+    - name: Instalar unzip
+      apt:
+        name: unzip
+        state: present
+
+    - name: Instalar Apache
+      apt:
+        name: apache2
+        state: present
+
+    - name: Instalar extensiones PHP
+      apt:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - php
+        - php-mysql
+        - libapache2-mod-php
+        - php-xml
+        - php-mbstring
+        - php-curl
+        - php-zip
+        - php-gd
+        - php-intl
+        - php-soap
+
+    - name: Configuración de parámetros 1
+      replace:
+        path: /etc/php/8.1/apache2/php.ini
+        regexp: '^max_input_vars = 1000$'
+        replace: 'max_input_vars = 5000'
+
+    - name: Configuración de parámetros 2
+      replace:
+        path:  /etc/php/8.1/cli/php.ini
+        regexp: '^max_input_vars = 1000$'
+        replace: 'max_input_vars = 5000'
+
+    - name: Habilitar el módulo rewrite de Apache
+      apache2_module:
+        name: rewrite
+        state: present
+
+    - name: Descargar el código fuente de Moodle
+      get_url:
+        url: https://github.com/moodle/moodle/archive/refs/tags/v4.3.1.zip
+        dest: /tmp/v4.3.1.zip
+
+    - name: Borrar instalaciones previas de Moodle
+      file:
+        path: /var/www/html/*
+        state: absent
+
+    - name: Descomprimir el código fuente de Moodle
+      unarchive:
+        src: /tmp/v4.3.1.zip
+        dest: /var/www/html
+        remote_src: yes
+
+    - name: Mover contenido de la carpeta de Moodle
+      shell: mv /var/www/html/moodle-4.3.1/* /var/www/html
+
+    - name: Cambiar propietario y permisos de los archivos de Moodle
+      file:
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        recurse: yes
+        mode: "0755"
+
+    - name: Crear directorio de datos de Moodle
+      file:
+        path: /var/www/moodledata
+        state: directory
+        owner: www-data
+        group: www-data
+
+    - name: Ejecutar script de instalación de Moodle
+      command: php /var/www/html/admin/cli/install.php \
+        --lang="{{ Moodle.MOODLE_LANG }}" \
+        --wwwroot="{{ Moodle.MOODLE_WWWROOT }}" \
+        --dataroot="{{ Moodle.MOODLE_DATAROOT }}" \
+        --dbtype="{{ Moodle.Moodle_DB_type }}" \
+        --dbhost="{{ Moodle.Moodle_DB_HOST }}" \
+        --dbname="{{ Moodle.Moodle_DB_NAME }}" \
+        --dbuser="{{ Moodle.Moodle_DB_USER }}" \
+        --dbpass="{{ Moodle.Moodle_DB_pass }}" \
+        --fullname="{{ Moodle.Moodle_fullname }}" \
+        --shortname="{{ Moodle.Moodle_short }}" \
+        --summary="{{ Moodle.Moodle_sum }}" \
+        --adminuser="{{ Moodle.Moodle_admin }}" \
+        --adminpass="{{ Moodle.Moodle_admin_pass }}" \
+        --adminemail="{{ Moodle.Moodle_email }}" \
+        --non-interactive \
+        --agree-license
+
+     
+
+
+    

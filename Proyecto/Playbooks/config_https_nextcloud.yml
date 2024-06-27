@@ -1,0 +1,29 @@
+---
+- name: Playbook para configurar HTTPS
+  hosts: Nextcloud
+  become: yes
+
+  vars_files:
+    - ../vars/variables.yml
+
+  tasks:
+
+    - name: Desinstalar instalaciones previas de Certbot
+      apt:
+        name: certbot
+        state: absent
+
+    - name: Instalar Certbot con snap
+      snap:                                    
+        name: certbot
+        classic: yes
+        state: present
+
+    - name: Solicitar y configurar certificado SSL/TLS a Let's Encrypt con certbot
+      command:
+        certbot --apache \
+        -m {{ certbot_nextcloud.email }} \
+        --agree-tos \
+        --no-eff-email \
+        --non-interactive \
+        -d {{ certbot_nextcloud.domain }}

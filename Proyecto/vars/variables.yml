@@ -1,0 +1,105 @@
+Moodle:
+   MOODLE_LANG: es
+   MOODLE_WWWROOT: https://sitiomoodle.ddns.net
+   MOODLE_DATAROOT: /var/www/moodledata
+   Moodle_DB_type: mysqli
+   Moodle_DB_HOST: 172.31.93.76
+   Moodle_DB_NAME: moodle
+   Moodle_DB_USER: moodle_user
+   Moodle_DB_pass: moodle_pass
+   Moodle_fullname: Moodlefullname
+   Moodle_short: Moodlefull
+   Moodle_sum: Aula_virtual
+   Moodle_admin: admin
+   Moodle_admin_pass: admin_admin
+   Moodle_email: demo@demo.com
+   IP_CLIENTE_MYSQL: 172.31.%
+   MYSQL_PRIVATE: 0.0.0.0
+
+Nextcloud:
+   Nextcloud_DB_: mysql
+   Nextcloud_DB_NAME: NextcloudDB
+   Nextcloud_DB_USER: USU_NEXT_
+   Nextcloud_DB_PASS: Next_Next
+   Nextcloud_ADMIN_USER: root
+   Nextcloud_ADMIN_PASS: password
+
+certbot:
+   email: demo@demo.com
+   domain: sitiomoodle.ddns.net
+
+certbot_nextcloud:
+   email: demo@demo.com
+   domain: nextcloudmoodle.ddns.net
+
+LDAP:
+  ldap_base: "dc=ATLAS,dc=com"
+  admin_dn: "cn=admin,dc=ATLAS,dc=com"
+  admin_password: "1234"
+
+grupos_alumnos:
+  - { uid: "shersan", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "msanper", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "pgarrod", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "amarlop", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "dnavnav", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "cmordia", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "egilmor", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "amolsua", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "rmarort", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "dcorgar", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "agueloz", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "jcanloz", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "imedsan", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "mestbar", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "esanper", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "riglcas", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "sprivid", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "lherflo", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "jvazcab", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "vcamfue", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "adieagui", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "arodcal", group_name: "alumnos", gidNumber: "10000" }
+  - { uid: "ssolgal", group_name: "alumnos", gidNumber: "10000" }
+
+grupos_profesores:
+  - { uid: "pruipin", group_name: "profesores", gidNumber: "10001" }
+  - { uid: "mjimlop", group_name: "profesores", gidNumber: "10001" }
+  - { uid: "cgargar", group_name: "profesores", gidNumber: "10001" }
+  - { uid: "lsanest", group_name: "profesores", gidNumber: "10001" }
+  - { uid: "mruedia", group_name: "profesores", gidNumber: "10001" }
+
+users:
+  - { uid: "shersan", uidNumber: "2001", gidNumber: "10000", cn: "Samuel Hernández Santisteban", sn: "Hernández Santisteban", password: "{SSHA}k+fiPt3IojFLwkgkfdgntMdTZF8RvKo4" }
+  - { uid: "msanper", uidNumber: "2002", gidNumber: "10000", cn: "Manolo Sanchez Perez", sn: "Sanchez Perez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "pgarrod", uidNumber: "2003", gidNumber: "10000", cn: "Pedro García Rodriguez", sn: "García Rodriguez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "amarlop", uidNumber: "2004", gidNumber: "10000", cn: "Antonio Martínez Lopez", sn: "Martínez Lopez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "dnavnav", uidNumber: "2005", gidNumber: "10000", cn: "David Navarro Navarro", sn: "Navarro Navarro", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "cmordia", uidNumber: "2006", gidNumber: "10000", cn: "Carlos Moreno Diaz", sn: "Moreno Diaz", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "egilmor", uidNumber: "2007", gidNumber: "10000", cn: "Elena Gil Moreno", sn: "Gil Moreno", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "amolsua", uidNumber: "2008", gidNumber: "10000", cn: "Andrés Molina Suárez", sn: "Molina Suárez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "rmarort", uidNumber: "2009", gidNumber: "10000", cn: "Raúl Marin Ortiz", sn: "Marin Ortiz", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "dcorgar", uidNumber: "2010", gidNumber: "10000", cn: "Diego Cortes Garrido", sn: "Cortes Garrido", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "agueloz", uidNumber: "2011", gidNumber: "10000", cn: "Alfonso Guerrero Lozano", sn: "Guerrero Lozano", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "jcanloz", uidNumber: "2013", gidNumber: "10000", cn: "Julian Cano Lozano", sn: "Cano Lozano", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "imedsan", uidNumber: "2014", gidNumber: "10000", cn: "Ivan Medina Sanz", sn: "Medina Sanz", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "mestbar", uidNumber: "2015", gidNumber: "10000", cn: "Mario Esteban Garcia", sn: "Esteban García", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "esanper", uidNumber: "2016", gidNumber: "10000", cn: "Emilio Santisteban Perez", sn: "Santisteban Perez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "riglcas", uidNumber: "2017", gidNumber: "10000", cn: "Ramon Iglesias Castillo", sn: "Iglesias Castillo", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "sprivid", uidNumber: "2018", gidNumber: "10000", cn: "Santiago Prieto Vidal", sn: "Prieto Vidal", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "lherflo", uidNumber: "2019", gidNumber: "10000", cn: "Luis Herrera Flores", sn: "Herrera Flores", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "jvazcab", uidNumber: "2022", gidNumber: "10000", cn: "Joaquin Vazquez Cabrera", sn: "Vazquez Cabrera", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "vcamfue", uidNumber: "2023", gidNumber: "10000", cn: "Vicente Campos Fuentes", sn: "Campos Fuentes", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "adieagui",uidNumber: "2024", gidNumber: "10000", cn: "Adrian Diez Aguilar", sn: "Diez Aguilar", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "arodcal", uidNumber: "2025", gidNumber: "10000", cn: "Alfonso Rodriguez Calvo", sn: "Rodriguez Calvo", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "ssolgal", uidNumber: "2026", gidNumber: "10000", cn: "Sergio Soler Gallardo", sn: "Soler Gallardo", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+
+users_profes:
+  - { uid: "pruipin", uidNumber: "2030", gidNumber: "10001", cn: "Pepe Ruiz Piñero", sn: "Hernández Santisteban", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "mjimlop", uidNumber: "2031", gidNumber: "10001", cn: "Marta Jimenez López", sn: "Sanchez Perez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "cgargar", uidNumber: "2032", gidNumber: "10001", cn: "Christian García García", sn: "García Rodriguez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "lsanest", uidNumber: "2033", gidNumber: "10001", cn: "Luisa Sanchez Esteban", sn: "Martínez Lopez", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+  - { uid: "mruedia", uidNumber: "2034", gidNumber: "10001", cn: "Mario Rueda Díaz", sn: "Navarro Navarro", password: "{SSHA}UnyzosO+4Fo7QK6gsS13zQl+Wr1vXbIZ" }
+
+ 
+
